@@ -34,10 +34,6 @@ Zbrati in strukturirati vremenske napovedi ter meritve. Oceniti točnost napoved
    ```bash
    pip install -r requirements.txt
    ```
-2. Zaženi skripto:
-   ```bash
-   python run_analysis.py
-   ```
 
 Skripta pridobi napovedi in trenutne podatke za Koper, Ljubljano in Maribor,
 shrani rezultate v mapo `data/`, izračuna osnovne metrike (MAE, RMSE) ter

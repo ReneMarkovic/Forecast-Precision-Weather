@@ -34,7 +34,7 @@ def main():
         mae = analysis.compute_mae(df["actual"], df["forecast"])
         rmse = analysis.compute_rmse(df["actual"], df["forecast"])
         print(f"{city} - MAE: {mae:.2f}, RMSE: {rmse:.2f}")
-
+        df["timestamp"] = [item["dt_txt"] for item in forecast_data.get("list", [])]
         visualization.plot_forecast_vs_actual(df, "timestamp", "actual", "forecast", city)
 
 

@@ -29,8 +29,6 @@ def fetch_forecast(city: str, days: int = 7) -> Dict:
         "timezone": "Europe/Ljubljana",
     }
     response = requests.get(OPEN_METEO_API_URL, params=params, timeout=10)
-    response.raise_for_status()
-    return response.json()
 
 
 def fetch_current(city: str) -> Dict:
@@ -43,5 +41,15 @@ def fetch_current(city: str) -> Dict:
         "timezone": "Europe/Ljubljana",
     }
     response = requests.get(OPEN_METEO_API_URL, params=params, timeout=10)
+
+def fetch_current(city: str, api_key: str = None) -> Dict:
+    """Fetch current weather data for a city."""
+    api_key = api_key or os.getenv("OPENWEATHER_API_KEY")
+    if not api_key:
+        raise ValueError("OPENWEATHER_API_KEY not provided")
+
+    url = f"{OPENWEATHER_API_URL}/weather"
+    params = {"q": city, "appid": api_key, "units": "metric"}
+    response = requests.get(url, params=params, timeout=10)
     response.raise_for_status()
     return response.json()
