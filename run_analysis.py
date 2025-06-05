@@ -10,25 +10,31 @@ def main():
         forecast_data = data_fetcher.fetch_forecast(city)
         current_data = data_fetcher.fetch_current(city)
 
-        storage.save_records(f"forecast_{city}.csv", forecast_data.get("list", []))
-        storage.save_records(f"current_{city}.csv", [current_data])
+        hours = forecast_data.get("hourly", {}).get("time", [])
+        temps = forecast_data.get("hourly", {}).get("temperature_2m", [])
+        forecast_records = [
+            {"time": t, "temp": temp} for t, temp in zip(hours, temps)
+        ]
+        storage.save_records(f"forecast_{city}.csv", forecast_records)
 
-        # Example analysis: this expects that forecast_data has 'main' field
-        forecast_temps = [item["main"]["temp"] for item in forecast_data.get("list", [])]
-        actual_temp = current_data["main"]["temp"] if current_data else None
-        if actual_temp is None or not forecast_temps:
+        current_record = current_data.get("current_weather")
+        if current_record:
+            storage.save_records(f"current_{city}.csv", [current_record])
+
+        if not forecast_records or not current_record:
             print(f"No data for {city}")
             continue
 
         df = pd.DataFrame({
-            "forecast": forecast_temps,
-            "actual": [actual_temp] * len(forecast_temps)
+            "timestamp": hours,
+            "forecast": temps,
+            "actual": [current_record["temperature"]] * len(temps),
         })
+
         mae = analysis.compute_mae(df["actual"], df["forecast"])
         rmse = analysis.compute_rmse(df["actual"], df["forecast"])
         print(f"{city} - MAE: {mae:.2f}, RMSE: {rmse:.2f}")
 
-        df["timestamp"] = [item["dt_txt"] for item in forecast_data.get("list", [])]
         visualization.plot_forecast_vs_actual(df, "timestamp", "actual", "forecast", city)
 
 

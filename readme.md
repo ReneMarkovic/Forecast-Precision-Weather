@@ -26,7 +26,7 @@ Zbrati in strukturirati vremenske napovedi ter meritve. Oceniti točnost napoved
 - Python: zbiranje in obdelava podatkov
 - Pandas, NumPy: analiza
 - Matplotlib, Plotly: vizualizacije
-- APIs: vremenski podatki (npr. OpenWeatherMap, ARSO, Meteostat, ipd.)
+- APIs: vremenski podatki (npr. Open-Meteo, ARSO, Meteostat, ipd.)
 
 ## Navodila za zagon
 
@@ -34,8 +34,7 @@ Zbrati in strukturirati vremenske napovedi ter meritve. Oceniti točnost napoved
    ```bash
    pip install -r requirements.txt
    ```
-2. Nastavi okoljsko spremenljivko `OPENWEATHER_API_KEY` s svojim API ključem.
-3. Zaženi skripto:
+2. Zaženi skripto:
    ```bash
    python run_analysis.py
    ```
