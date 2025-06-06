@@ -42,7 +42,21 @@ def run_hourly_accuracy_evaluation():
 
             # Standardiziraj ime časovnega stolpca
             forecast_df["time"] = pd.to_datetime(forecast_df["time"])
-            actual_df["time"] = pd.to_datetime(actual_df["fetched_time"])
+            # Open-Meteo current weather timestamps rarely align exactly with the
+            # forecasted hourly steps. Use the API time and round down to the
+            # nearest hour so we can merge it with forecast data.
+            actual_df["time"] = (
+                pd.to_datetime(actual_df["api_time"])
+                .dt.floor("H")
+            )
+
+            # Map current_weather field names to forecast parameter names
+            actual_df = actual_df.rename(
+                columns={
+                    "temperature": "temperature_2m",
+                    "windspeed": "windspeed_10m",
+                }
+            )
             
             # Preimenuj forecast stolpce
             forecast_df = forecast_df.rename(columns={p: f"{p}_forecast" for p in PARAMETERS})
