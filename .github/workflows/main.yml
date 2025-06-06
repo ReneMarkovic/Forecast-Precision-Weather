@@ -1,3 +1,45 @@
+name: Fetch-Forecast-Eval
+
 on:
   schedule:
     - cron: '0 * * * *'  # vsakih 60 minut
+  workflow_dispatch:      # omogoča ročni zagon iz GitHub vmesnika
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Nastavi Python okolje
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Namesti odvisnosti
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Ustvari potrebne mape (če ne obstajajo)
+        run: |
+          mkdir -p data/actual_data
+          mkdir -p data/hourly_forecasts
+          mkdir -p data/results
+
+      - name: Zaženi zajem, napoved in evalvacijo
+        run: |
+          python fetch_real_time_Data.py
+          python fetch_prediction_data.py
+          python run_hourly_analysis.py
+          python run_hourly_accuracy.py
+
+      - name: Commit results (če se podatki shranjujejo v repo)
+        run: |
+          git config --global user.email "you@example.com"
+          git config --global user.name "GitHub Actions"
+          git add data/results/*.csv
+          git commit -m "Samodejna posodobitev rezultatov `date`" || echo "Ni sprememb"
+          git push || echo "Ni možno push-at"
