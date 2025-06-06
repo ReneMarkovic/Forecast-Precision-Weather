@@ -39,3 +39,13 @@ Skripta pridobi napovedi in trenutne podatke za Koper, Ljubljano in Maribor,
 shrani rezultate v mapo `data/`, izračuna osnovne metrike (MAE, RMSE) ter
 ustvari graf napovedi in dejanskih meritev v mapi `plots/`.
 
+
+## Ocena napovedi glede na casovni odmik
+
+Za analizo, kako se natančnost napovedi spreminja s časovnim zamikom (1h, 2h, ... 24h), lahko zaženemo skripto `run_hourly_horizon_accuracy.py`:
+
+```bash
+python run_hourly_horizon_accuracy.py
+```
+
+Rezultati se shranijo v `data/results/hourly_horizon_accuracy.csv` in vsebujejo MAE ter RMSE za vsak parameter in vsak urni odmik.
