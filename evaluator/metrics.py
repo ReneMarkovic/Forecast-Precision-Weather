@@ -3,6 +3,10 @@
 import numpy as np
 import pandas as pd
 
+def compue_mape_mape(actual: pd.Series, forecast: pd.Series) -> float:
+    """Mean Absolute Percentage Error"""
+    return np.mean(np.abs((actual - forecast) / actual)) * 100 if not actual.empty else np.nan
+
 def compute_mae(actual: pd.Series, forecast: pd.Series) -> float:
     """Mean Absolute Error"""
     return np.mean(np.abs(actual - forecast))
@@ -14,6 +18,7 @@ def compute_rmse(actual: pd.Series, forecast: pd.Series) -> float:
 
 
 METRIC_FUNCTIONS = {
+    "MAPE": compue_mape_mape,
     "MAE": compute_mae,
     "RMSE": compute_rmse,
 }
