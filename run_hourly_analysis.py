@@ -47,7 +47,8 @@ def run_hourly_accuracy_evaluation():
             # nearest hour so we can merge it with forecast data.
             actual_df["time"] = (
                 pd.to_datetime(actual_df["api_time"])
-                .dt.floor("H")
+                # ``"H"`` is deprecated; use lowercase ``"h"`` instead
+                .dt.floor("h")
             )
 
             # Map current_weather field names to forecast parameter names
