@@ -50,7 +50,8 @@ def run_hourly_horizon_accuracy():
             if recs:
                 actual_records.extend(recs)
         actual_df = pd.DataFrame(actual_records)
-        actual_df["time"] = pd.to_datetime(actual_df["api_time"]).dt.floor("H")
+        # ``"H"`` is deprecated in pandas 2.1; use lowercase ``"h"`` instead
+        actual_df["time"] = pd.to_datetime(actual_df["api_time"]).dt.floor("h")
         actual_df = actual_df.rename(columns={"temperature": "temperature_2m", "windspeed": "windspeed_10m"})
         actual_df = actual_df.rename(columns={p: f"{p}_actual" for p in PARAMETERS if p in actual_df.columns})
 
