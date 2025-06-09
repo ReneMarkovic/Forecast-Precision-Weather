@@ -1,0 +1,2 @@
+time,interval,temperature,windspeed,winddirection,is_day,weathercode,fetched_time,api_time
+2025-06-09T01:30,900,17.0,9.0,88,0,63,2025-06-09T01:32:19.787254,2025-06-09T01:30
